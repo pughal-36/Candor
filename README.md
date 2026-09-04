@@ -141,7 +141,8 @@ Frontend UI is available at http://localhost:5173.
 
 ## Demo
 
-Demo video: *add walkthrough link here*
+Demo video:https://youtu.be/FGPnOwqr4A8
+
 
 ---
 
