@@ -51,22 +51,8 @@ def add_exception(
     if reason_code not in _VALID_REASON_CODES:
         raise ValueError(f"Invalid reason_code '{reason_code}'. Must be one of {_VALID_REASON_CODES}.")
 
-    # Check for existing unresolved exception for this bank_row to carry forward first_seen_batch_id
-    effective_first_seen = first_seen_batch_id or batch_id
-    if bank_row_id:
-        existing = (
-            supabase.table("exceptions")
-            .select("first_seen_batch_id, batch_id")
-            .eq("bank_row_id", bank_row_id)
-            .is_("resolution", "null")
-            .execute()
-        )
-        if existing.data:
-            effective_first_seen = existing.data[0].get("first_seen_batch_id") or existing.data[0].get("batch_id") or effective_first_seen
-
     record = {
         "batch_id":                       batch_id,
-        "first_seen_batch_id":            effective_first_seen,
         "reason_code":                    reason_code,
         "reason":                         reason,
         "bank_row_id":                    bank_row_id,
@@ -82,6 +68,6 @@ def add_exception(
 
     supabase.table("exceptions").insert(record).execute()
     logger.info(
-        "Exception: batch=%s first_seen=%s reason_code=%s bank_row=%s",
-        batch_id, effective_first_seen, reason_code, bank_row_id,
+        "Exception: batch=%s reason_code=%s bank_row=%s",
+        batch_id, reason_code, bank_row_id,
     )

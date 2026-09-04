@@ -94,31 +94,33 @@ def run_agent_match(
 
     if candidate_s:
         s_gross = float(candidate_s.get("gross_amount") or (candidate_s.get("amount", 0) + candidate_s.get("fee", 0)))
-        candidate_o = None
-        for o in orders:
-            o_amt = float(o.get("amount", 0))
-            if abs(o_amt - s_gross) <= 5.0 or abs(o_amt - b_amt) <= 5.0:
-                candidate_o = o
-                break
+        s_net = float(candidate_s.get("amount", 0))
 
-        if candidate_o:
-            s_fee = float(candidate_s.get("fee", 0.0))
-            s_amt = float(candidate_s.get("amount", 0.0))
-            o_amt = float(candidate_o.get("amount", 0.0))
+        # Require bank credit amount to match settlement net amount within INR 2 tolerance
+        if abs(s_net - b_amt) <= 2.0:
+            candidate_o = None
+            for o in orders:
+                o_amt = float(o.get("amount", 0))
+                if abs(o_amt - s_gross) <= 5.0 or abs(o_amt - b_amt) <= 5.0:
+                    candidate_o = o
+                    break
 
-            # Compute honest confidence based on data alignment
-            confidence = 0.88 if (s_fee > 0 and abs((o_amt - s_fee) - s_amt) <= 1.0) else 0.82
+            if candidate_o:
+                s_fee = float(candidate_s.get("fee", 0.0))
+                o_amt = float(candidate_o.get("amount", 0.0))
 
-            return AgentMatchResult(
-                settlement_id=candidate_s["id"],
-                order_id=candidate_o["id"],
-                confidence=confidence,
-                reasoning=(
-                    f"Order '{candidate_o.get('order_id')}' (₹{o_amt:.2f}) minus Razorpay fee "
-                    f"(₹{s_fee:.2f}) nets to settlement '{candidate_s.get('reference_number')}' "
-                    f"(₹{s_amt:.2f}), matching bank credit of ₹{b_amt:.2f}."
-                ),
-            )
+                confidence = 0.88 if (s_fee > 0 and abs((o_amt - s_fee) - s_net) <= 1.0) else 0.82
+
+                return AgentMatchResult(
+                    settlement_id=candidate_s["id"],
+                    order_id=candidate_o["id"],
+                    confidence=confidence,
+                    reasoning=(
+                        f"Order '{candidate_o.get('order_id')}' (₹{o_amt:.2f}) minus Razorpay fee "
+                        f"(₹{s_fee:.2f}) nets to settlement '{candidate_s.get('reference_number')}' "
+                        f"(₹{s_net:.2f}), matching bank credit of ₹{b_amt:.2f}."
+                    ),
+                )
 
     # 2. LLM Call via Google Gemini SDK
     if not settings.gemini_api_key:
