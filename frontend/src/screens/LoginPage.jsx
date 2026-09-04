@@ -98,7 +98,7 @@ export default function LoginPage({ onLoginSuccess }) {
           <div className="space-y-2 font-ledger text-xs">
             <div className="flex items-center gap-2.5 p-2 rounded" style={{ background: 'color-mix(in srgb, #1B2430 5%, transparent)', border: '1px solid color-mix(in srgb, #1B2430 10%, transparent)' }}>
               <span className="w-2 h-2 rounded-full bg-emerald-600" />
-              <span className="font-medium">1. Bank Statement PDF (ICICI / HDFC / Axis)</span>
+              <span className="font-medium">1. Bank Statement PDF</span>
             </div>
             <div className="flex items-center gap-2.5 p-2 rounded" style={{ background: 'color-mix(in srgb, #1B2430 5%, transparent)', border: '1px solid color-mix(in srgb, #1B2430 10%, transparent)' }}>
               <span className="w-2 h-2 rounded-full bg-blue-600" />
