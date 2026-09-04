@@ -1,6 +1,12 @@
 # Candor
 
-> A deterministic-first payment reconciliation agent for merchants — matches payment gateway settlements (Razorpay), bank statements, and internal merchant orders, producing an honest exception ledger for everything it couldn't confidently resolve.
+**Deterministic payment reconciliation for Indian merchants.** Verify 3-way matching between bank statements, Razorpay payouts, and internal order ledgers.
+
+A deterministic-first payment reconciliation agent for merchants — matches payment gateway settlements (Razorpay), bank statements, and internal merchant orders, producing an honest exception ledger for everything it couldn't confidently resolve.
+
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) ![Python](https://img.shields.io/badge/Python-3.11+-green.svg) ![Built for Razorpay AI Buildathon](https://img.shields.io/badge/Razorpay-AI%20Buildathon-orange.svg)
+
+Built for the **Razorpay AI Buildathon — Track 04: AI Finance Controller.**
 
 ---
 
@@ -10,11 +16,11 @@ A merchant's money lives in three places that never perfectly agree:
 
 | Source | Format | Messiness |
 |--------|--------|-----------|
-| **Razorpay settlement report** | Structured CSV | Payout IDs, gateway fees, reference numbers |
-| **Bank statement** | PDF (text layer or scanned) | Raw narration strings, mangled references, rounding |
-| **Internal orders / invoices** | Structured CSV | Order IDs, amounts, customer records |
+| Razorpay settlement report | Structured CSV | Payout IDs, gateway fees, reference numbers |
+| Bank statement | PDF (text layer or scanned) | Raw narration strings, mangled references, rounding |
+| Internal orders / invoices | Structured CSV | Order IDs, amounts, customer records |
 
-Reconciling these manually is slow and error-prone. Reconciling them with a naive LLM produces confident-sounding matches that are arithmetically wrong. Candor solves this with a **deterministic pass first, LLM only for genuine ambiguity, and a mandatory verification gate before any AI-proposed match is accepted**.
+Reconciling these manually is slow and error-prone. Reconciling them with a naive LLM produces confident-sounding matches that are arithmetically wrong. Candor solves this with a **deterministic pass first**, LLM only for genuine ambiguity, and a **mandatory verification gate** before any AI-proposed match is accepted.
 
 ---
 
@@ -26,7 +32,7 @@ Reconciling these manually is slow and error-prone. Reconciling them with a naiv
 - **LLM fuzzy-match pass** — Gemini function-calling at temperature 0; inspects unmatched transactions with explicit accounting reasoning
 - **Verification gate** — independent deterministic check confirms cited IDs exist and amount arithmetic (`settlement.amount + settlement.fee == order.amount`) is valid within tolerance; failures route directly to the exception ledger
 - **Tunable confidence threshold** — adjustable slider in the UI to shift items between matched and exception views
-- **Continuous aging exception ledger** — tracks unresolved items with machine-readable reasons and human controls (`accepted`, `rejected`, `unmatched`) across batches
+- **Continuous aging exception ledger** — tracks unresolved items with machine-readable reasons and human controls (accepted, rejected, unmatched) across batches
 - **Live reporting** — match rate %, breakdown by match type, and pipeline processing time per batch
 
 ---
@@ -34,61 +40,20 @@ Reconciling these manually is slow and error-prone. Reconciling them with a naiv
 ## Technology Stack
 
 | Layer | Technology |
-|-------|-----------|
+|-------|------------|
 | Backend | Python · FastAPI |
 | Database | Supabase (PostgreSQL) |
 | LLM | Gemini (`gemini-3.6-flash`, temperature 0) |
-| PDF / OCR | `pdfplumber` (text layer) · Tesseract (OCR fallback) |
+| PDF / OCR | pdfplumber (text layer) · Tesseract (OCR fallback) |
 | Frontend | React · Tailwind CSS |
 
 ---
 
 ## Architecture Overview
 
-```
-                ┌─────────────────────────────────────┐
-                │        Multi-Source Upload           │
-                │ (PDF Statement, CSV Setl, CSV Orders)│
-                └────────────────┬────────────────────┘
-                                 │
-                    ┌────────────▼────────────┐
-                    │   Ingestion Pipelines   │
-                    │  PDF: pdfplumber/OCR    │
-                    │  CSV: Razorpay & Orders │
-                    └────────────┬────────────┘
-                                 │
-          ┌──────────────────────┼──────────────────────┐
-          │                      │                      │
-  razorpay_settlements   bank_statement          internal_orders
-          │                      │                      │
-          └──────────────────────┼──────────────────────┘
-                                 │
-                    ┌────────────▼────────────┐
-                    │  Deterministic Pass      │
-                    │  (Exact + Subset-Sum)   │
-                    └────────────┬────────────┘
-                    Matched ◄────┤────► Unmatched
-                                 │
-                    ┌────────────▼────────────┐
-                    │  LLM Fuzzy-Match Pass    │
-                    │  Gemini · temp=0         │
-                    │  DB Fast-Path Pre-Check  │
-                    └────────────┬────────────┘
-                                 │
-                    ┌────────────▼────────────┐
-                    │  Verification Gate       │
-                    │  ID existence check      │
-                    │  Amount arithmetic check │
-                    └────────────┬────────────┘
-          Accepted ◄─────────────┤─────────────► Rejected
-                                 │
-                    ┌────────────▼────────────┐
-                    │   Exception Ledger       │
-                    │   reason · aging · human │
-                    └─────────────────────────┘
-```
+![Architecture](docs/architecture-diagram.png)
 
-**Key design principle:** deterministic code handles certainty; the LLM only handles genuine ambiguity — and even then, it is independently verified against database arithmetic before acceptance.
+> **Key design principle:** deterministic code handles certainty; the LLM only handles genuine ambiguity — and even then, it is independently verified against database arithmetic before acceptance.
 
 ---
 
@@ -115,6 +80,7 @@ Candor/
 │   │   └── api/              # API client (typed, with error states)
 │   └── package.json
 ├── docs/                     # System & phase documentation
+│   ├── architecture-diagram.png  # System architecture diagram (referenced above)
 │   ├── OVERVIEW.md           # System overview & architecture index
 │   ├── DOMAIN_NOTES.md       # Domain reconciliation notes
 │   ├── SECURITY_NOTES.md     # Security & threat model
@@ -130,7 +96,7 @@ Candor/
 
 - Python 3.11+
 - Node.js 18+
-- A [Supabase](https://supabase.com) project
+- A Supabase project
 - A Google AI / Gemini API key
 - Tesseract OCR installed locally (optional fallback path)
 
@@ -138,20 +104,9 @@ Candor/
 
 ## Environment Variables
 
-Copy `.env.example` to `.env` in both the root directory and `backend/`:
+Copy `.env.example` to `.env` in both the root directory and backend
 
 ```bash
-# Supabase
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-
-# Gemini
-GEMINI_API_KEY=your-gemini-api-key
-
-# Matching Config
-CONFIDENCE_THRESHOLD=0.75
-
 # Frontend
 VITE_API_BASE_URL=http://localhost:8000
 ```
@@ -170,7 +125,7 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
 
-API documentation is available at `http://localhost:8000/docs` (Swagger UI).
+API documentation is available at http://localhost:8000/docs (Swagger UI).
 
 ### Frontend
 
@@ -180,7 +135,22 @@ npm install
 npm run dev
 ```
 
-Frontend UI is available at `http://localhost:5173`.
+Frontend UI is available at http://localhost:5173.
+
+---
+
+## Demo
+
+Demo video: *add walkthrough link here*
+
+---
+
+## Roadmap
+
+- [ ] Multi-bank statement format support beyond initial parser set
+- [ ] Merchant-facing notification on new exceptions
+- [ ] Export exception ledger to CSV/Excel for accounting handoff
+- [ ] Configurable per-merchant tolerance & matching rules
 
 ---
 
