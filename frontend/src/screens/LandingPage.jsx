@@ -84,6 +84,9 @@ export default function LandingPage({ user, onGetStarted }) {
               </p>
             </div>
           </div>
+          <p className="mt-4 pt-4 text-xs" style={{ color: 'var(--color-ink-500)', borderTop: '1px solid var(--color-paper-300)' }}>
+            Candor never silently forces a match. Exact matches resolve automatically — everything else lands on an exception ledger with full reasoning and human controls.
+          </p>
         </div>
       </section>
 
