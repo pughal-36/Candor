@@ -1,0 +1,134 @@
+# ============================================================
+# Candor — .gitignore
+# Stack: Python/FastAPI (backend) + React/Tailwind (frontend)
+# ============================================================
+
+# ------------------------------------------------------------
+# Environment / Secrets  ← NEVER commit these
+# ------------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+# ------------------------------------------------------------
+# Antigravity / Prompt / Instruction Files  ← NEVER commit these
+# ------------------------------------------------------------
+ledgermatch_build_prompt.md
+ledgermatch_commitmessages_prompt.md
+ledgermatch_docs_prompt.md
+ledgermatch_frontend_prompt.md
+candor_*_prompt.md
+*_prompt.md
+filenames.txt
+.git_backup/
+.gemini/
+
+# ------------------------------------------------------------
+# Python / FastAPI (backend/)
+# ------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+
+# Type checkers
+.mypy_cache/
+.dmypy.json
+.pytype/
+.ruff_cache/
+
+# Jupyter (if used for exploration)
+.ipynb_checkpoints/
+*.ipynb
+
+# ------------------------------------------------------------
+# Node / React (frontend/)
+# ------------------------------------------------------------
+node_modules/
+.npm
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# Build output
+frontend/dist/
+frontend/build/
+.next/
+.cache/
+.parcel-cache/
+
+# Storybook
+storybook-static/
+
+# ------------------------------------------------------------
+# Uploads / Runtime data  ← bank statement PDFs must NOT be committed
+# ------------------------------------------------------------
+uploads/
+*.pdf
+!sample_bank_statement.pdf
+tmp/
+temp/
+
+# ------------------------------------------------------------
+# Logs
+# ------------------------------------------------------------
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ------------------------------------------------------------
+# IDE / Editor
+# ------------------------------------------------------------
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# ------------------------------------------------------------
+# OS-generated
+# ------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# ------------------------------------------------------------
+# Docker (if used later)
+# ------------------------------------------------------------
+.docker/
+
+# ------------------------------------------------------------
+# Supabase local dev (if used later)
+# ------------------------------------------------------------
+supabase/.temp/
