@@ -184,7 +184,7 @@ export default function App() {
   const hasBatchData    = matchCount > 0 || exceptions.length > 0
 
   if (activeView === 'landing') {
-    return <LandingPage onGetStarted={() => dispatch({ type: 'SET_VIEW', view: user ? 'upload' : 'login' })} />
+    return <LandingPage user={user} onGetStarted={() => dispatch({ type: 'SET_VIEW', view: user ? 'upload' : 'login' })} />
   }
 
   if (activeView === 'login') {

@@ -7,7 +7,7 @@ import { useState } from 'react'
  * Uses the same visual palette as the dashboard (ledger/paper theme, IBM Plex Mono,
  * Inter, Playfair Display).
  */
-export default function LandingPage({ onGetStarted }) {
+export default function LandingPage({ user, onGetStarted }) {
   return (
     <div className="min-h-screen" style={{ background: 'var(--color-paper-100)' }}>
       {/* Header / Nav */}
@@ -27,7 +27,7 @@ export default function LandingPage({ onGetStarted }) {
             className="text-sm px-4 py-2 rounded transition-colors font-medium"
             style={{ background: '#E8E4DC', color: 'var(--color-ink-900)', border: 'none', cursor: 'pointer' }}
           >
-            Launch Dashboard
+            {user ? 'Dashboard' : 'Log in'}
           </button>
         </div>
       </header>
@@ -44,14 +44,17 @@ export default function LandingPage({ onGetStarted }) {
           Razorpay settlement reports, bank statement PDFs, and internal store invoices are separated by gateway fees, GST, TDS, T+2 settlement cycles, and mangled UTR numbers.
         </p>
 
-        <div className="flex justify-center gap-4">
+        <div className="flex flex-col items-center gap-3">
           <button
             onClick={onGetStarted}
             className="px-6 py-3 rounded text-base font-medium transition-all"
             style={{ background: 'var(--color-ink-900)', color: '#F5F2EC', border: 'none', cursor: 'pointer' }}
           >
-            Start Reconciling Batch
+            {user ? 'Upload New Batch' : 'Reconcile Your First Batch'}
           </button>
+          <p className="text-sm max-w-md" style={{ color: 'var(--color-ink-500)', lineHeight: 1.5 }}>
+            Three files in, every match explained. Nothing is silently forced — every decision shows its reasoning.
+          </p>
         </div>
       </section>
 
