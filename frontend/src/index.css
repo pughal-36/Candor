@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Candor Design System
+   Palette: ledger paper · ink blue · one accent per state
+   Typography: Inter (UI) · IBM Plex Mono (amounts/IDs) · Playfair (wordmark)
+   ============================================================ */
+
+@theme {
+  /* Paper palette — warm off-whites, not stark white */
+  --color-paper-50:  #FAF8F4;
+  --color-paper-100: #F5F2EC;
+  --color-paper-200: #EFEBE2;
+  --color-paper-300: #E5DDD0;
+  --color-paper-400: #C8C0B0;
+  --color-paper-500: #A89880;
+
+  /* Ink palette — deep blue-black for text and structure */
+  --color-ink-900: #1A1A2E;
+  --color-ink-800: #2D2D4A;
+  --color-ink-700: #3D3D5C;
+  --color-ink-600: #4A4A6A;
+  --color-ink-500: #6B6B8A;
+  --color-ink-400: #8B8BAA;
+
+  /* State colors — ONLY for matched / exception / pending status */
+  --color-matched:   #2D6A4F;   /* muted forest green   */
+  --color-exception: #C0392B;   /* deep ink red          */
+  --color-pending:   #8B6914;   /* amber / ochre         */
+  --color-agent:     #1A5276;   /* deep blue ink         */
+
+  /* Typography */
+  --font-sans:    'Inter', system-ui, sans-serif;
+  --font-mono:    'IBM Plex Mono', 'Menlo', monospace;
+  --font-display: 'Playfair Display', Georgia, serif;
+}
+
+/* ---- Base ---- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { font-size: 15px; }
+
+body {
+  margin: 0;
+  background-color: var(--color-paper-100);
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ---- Typography helpers ---- */
+.font-ledger  { font-family: var(--font-mono); }
+.font-display { font-family: var(--font-display); }
+
+/* ---- The ONE deliberate motion moment ----
+   Applied to a table row when the human resolves an exception.
+   The left border flashes from amber → green/grey over 600ms.
+   Nothing else on the page animates. */
+@keyframes resolveFlash {
+  0%   { border-left-color: var(--color-pending); background-color: color-mix(in srgb, var(--color-pending) 8%, transparent); }
+  60%  { border-left-color: var(--color-matched); background-color: color-mix(in srgb, var(--color-matched) 12%, transparent); }
+  100% { border-left-color: transparent; background-color: transparent; }
+}
+
+.row-resolving {
+  animation: resolveFlash 700ms ease-out forwards;
+  border-left-width: 3px;
+  border-left-style: solid;
+}
+
+/* ---- Scrollbar (subtle, paper-toned) ---- */
+::-webkit-scrollbar       { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--color-paper-200); }
+::-webkit-scrollbar-thumb { background: var(--color-paper-400); border-radius: 3px; }
