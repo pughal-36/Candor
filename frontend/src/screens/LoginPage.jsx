@@ -75,41 +75,16 @@ export default function LoginPage({ onLoginSuccess }) {
         <div className="hidden lg:block absolute top-0 bottom-0 left-12 w-px" style={{ background: 'rgba(220, 38, 38, 0.25)' }} />
 
         <div className="relative z-10">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-8 h-8 rounded flex items-center justify-center font-ledger font-bold text-sm text-white shadow-sm" style={{ background: '#1B2430' }}>
-              CD
-            </div>
-          </div>
-
           <h1 className="text-3xl lg:text-4xl font-serif font-bold tracking-tight mb-4" style={{ color: '#1B2430', fontFamily: 'Playfair Display, Georgia, serif' }}>
             Candor
           </h1>
 
           <p className="text-sm leading-relaxed max-w-md" style={{ color: 'color-mix(in srgb, #1B2430 75%, transparent)' }}>
-            Deterministic payment reconciliation for Indian merchants. Verify 3-way matching between bank statements, Razorpay payouts, and internal order ledgers.
+            Your books, reconciled in the background — always on, always accurate.
           </p>
         </div>
 
-        {/* Live Source Orientation Cue */}
-        <div className="mt-12 lg:mt-0 relative z-10">
-          <div className="text-xs font-ledger font-semibold uppercase tracking-wider mb-3" style={{ color: 'color-mix(in srgb, #1B2430 50%, transparent)' }}>
-            Reconciles 3 Data Streams
-          </div>
-          <div className="space-y-2 font-ledger text-xs">
-            <div className="flex items-center gap-2.5 p-2 rounded" style={{ background: 'color-mix(in srgb, #1B2430 5%, transparent)', border: '1px solid color-mix(in srgb, #1B2430 10%, transparent)' }}>
-              <span className="w-2 h-2 rounded-full bg-emerald-600" />
-              <span className="font-medium">1. Bank Statement PDF</span>
-            </div>
-            <div className="flex items-center gap-2.5 p-2 rounded" style={{ background: 'color-mix(in srgb, #1B2430 5%, transparent)', border: '1px solid color-mix(in srgb, #1B2430 10%, transparent)' }}>
-              <span className="w-2 h-2 rounded-full bg-blue-600" />
-              <span className="font-medium">2. Razorpay Settlements CSV Export</span>
-            </div>
-            <div className="flex items-center gap-2.5 p-2 rounded" style={{ background: 'color-mix(in srgb, #1B2430 5%, transparent)', border: '1px solid color-mix(in srgb, #1B2430 10%, transparent)' }}>
-              <span className="w-2 h-2 rounded-full bg-amber-600" />
-              <span className="font-medium">3. Internal Order Register CSV</span>
-            </div>
-          </div>
-        </div>
+
       </div>
 
       {/* Form Right Panel (Ruled Document Form) */}
