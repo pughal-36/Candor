@@ -26,7 +26,7 @@ export default function LoginPage({ onLoginSuccess }) {
   if (!email.trim()) {
     errors.email = 'Email address is required.'
   } else if (!/\S+@\S+\.\S+/.test(email)) {
-    errors.email = 'Enter a valid email address (e.g. finance@merchant.com).'
+    errors.email = 'Enter a valid email address (e.g. you@company.com).'
   }
 
   if (!password) {
@@ -146,10 +146,10 @@ export default function LoginPage({ onLoginSuccess }) {
 
           <div className="mb-6">
             <h2 className="text-xl font-bold font-serif mb-1" style={{ color: '#1B2430' }}>
-              {mode === 'login' ? 'Log in to your workspace' : 'Create a merchant account'}
+              {mode === 'login' ? 'Log in to your workspace' : 'Create your account'}
             </h2>
             <p className="text-xs font-ledger" style={{ color: 'color-mix(in srgb, #1B2430 60%, transparent)' }}>
-              {mode === 'login' ? 'Enter your credentials to access reconciliation batches.' : 'Enter your details to onboard your merchant workspace.'}
+              {mode === 'login' ? 'Enter your credentials to access reconciliation batches.' : 'Set up your account to start reconciling.'}
             </p>
           </div>
 
@@ -190,7 +190,7 @@ export default function LoginPage({ onLoginSuccess }) {
             {/* Email Field */}
             <div>
               <label htmlFor="email-input" className="block text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: '#1B2430' }}>
-                Merchant Email Address
+                Email
               </label>
               <input
                 id="email-input"
@@ -198,7 +198,7 @@ export default function LoginPage({ onLoginSuccess }) {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 onBlur={() => handleBlur('email')}
-                placeholder="finance@merchant.com"
+                placeholder="you@company.com"
                 className="w-full px-3.5 py-2.5 rounded text-sm font-ledger border transition-all focus:outline-none focus:ring-2 focus:ring-slate-900"
                 style={{
                   background: '#FFFFFF',
