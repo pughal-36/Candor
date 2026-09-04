@@ -79,9 +79,6 @@ export default function LoginPage({ onLoginSuccess }) {
             <div className="w-8 h-8 rounded flex items-center justify-center font-ledger font-bold text-sm text-white shadow-sm" style={{ background: '#1B2430' }}>
               CD
             </div>
-            <span className="font-ledger text-xs uppercase tracking-widest font-semibold" style={{ color: 'color-mix(in srgb, #1B2430 60%, transparent)' }}>
-              Reconciliation System v2.4
-            </span>
           </div>
 
           <h1 className="text-3xl lg:text-4xl font-serif font-bold tracking-tight mb-4" style={{ color: '#1B2430', fontFamily: 'Playfair Display, Georgia, serif' }}>

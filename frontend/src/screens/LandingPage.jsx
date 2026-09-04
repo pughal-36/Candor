@@ -19,9 +19,6 @@ export default function LandingPage({ onGetStarted }) {
           <span className="font-display text-2xl tracking-tight" style={{ color: '#E8E4DC' }}>
             Candor
           </span>
-          <span className="font-ledger text-xs px-2 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.1)', color: '#C8C0B0' }}>
-            v0.1.0
-          </span>
         </div>
 
         <div className="flex items-center gap-4">
